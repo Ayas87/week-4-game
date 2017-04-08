@@ -6,7 +6,7 @@
 .your-char{
 	border: 2px solid red;
 }
-.class-box {
+.char-box {
 	border: 2px solid black;
 	height: 200px;
 	width: 200px;
@@ -15,6 +15,17 @@
 
 }
 .char-name {
+	color: red;
+	text-align: center
+}.enemy-box {
+	border: 2px solid black;
+	height: 200px;
+	width: 200px;
+	display: inline-block;
+	margin: 10px;
+
+}
+.enemy-name {
 	color: red;
 	text-align: center
 }
