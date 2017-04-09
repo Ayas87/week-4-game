@@ -1,29 +1,61 @@
-#your-char, #enemy-list, #your-enemy {
-	height: 200;
-	border: 2px solid red;
-	margin: 30px;
+.text-box {
+	height: 150px;
+	padding: 30px;
 }
-.your-char{
-	border: 2px solid red;
+#selected-char-text, .instructions {
+	font-size: 20px;
+	color: darkseagreen;
+	font-weight: 700;
+	text-align: center;
+	margin: 20px;
 }
+.instructions {
+	color: red;
+}
+.your-char {
+	border: 2px solid green;
+	margin: 10px;
+}
+.your-enemies{
+	border: 2px solid red;
+	margin: 10px;
+	height: 234px;
+}
+.your-opponent{
+	border: 2px solid blue;
+	margin: 10px;
+	height: 234px;
+}
+
 .char-box {
 	border: 2px solid black;
 	height: 200px;
 	width: 200px;
 	display: inline-block;
 	margin: 10px;
-
 }
 .char-name {
 	color: red;
 	text-align: center
-}.enemy-box {
-	border: 2px solid black;
+}
+#selected-char {
+	border: 5px solid gold;
 	height: 200px;
 	width: 200px;
 	display: inline-block;
 	margin: 10px;
-
+	text-align: center;
+	color: darkseagreen;
+	font-weight: 700;
+}
+.enemy-box {
+	border: 5px solid red;
+	height: 200px;
+	width: 200px;
+	display: inline-block;
+	margin: 10px;
+	text-align: center;
+	font-weight: 700;
 }
 .enemy-name {
 	color: red;
