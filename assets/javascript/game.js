@@ -1,23 +1,23 @@
 var dbzConfig = {
     Goku: {
         name: 'Goku',
-        healthPoints: 100,
-        attackPower: 5,
-        attackPowerModifer: 5,
+        healthPoints: 105,
+        attackPower: 10,
+        attackPowerModifer: 1,
         counterAttackPower: 10,
     },
     Vegeta: {
         name: 'Vegeta',
         healthPoints: 150,
-        attackPower: 3,
-        attackPowerModifer: 3,
+        attackPower: 5,
+        attackPowerModifer: 35,
         counterAttackPower: 3,
     },
     Trunks: {
         name: 'Trunks',
         healthPoints: 110,
         attackPower: 5,
-        attackPowerModifer: 5,
+        attackPowerModifer: 35,
         counterAttackPower: 10,
     },
     Gohan: {
@@ -25,7 +25,7 @@ var dbzConfig = {
         healthPoints: 130,
         attackPower: 5,
         attackPowerModifer: 25,
-        counterAttackPower: 10,
+        counterAttackPower: 100,
     }
 };
 var dbzRpgGame = new RpgGame(dbzConfig); //creates a dbz instanced object where charName is passed through
@@ -94,33 +94,27 @@ function RpgGame(config) {
         var fightDiv = $('<button id="fight">');
         fightDiv.text('Fight!');
         $('.fight-button').append(fightDiv);
-        $('.fight-button').on('click', function() {
-            for (var key in dbzConfig) {
-                if (selectedOpponentName == dbzConfig[key].name) {
-                    opponentHealthPoints = dbzConfig[key].healthPoints;
-                    opponentCounterAttackPower = dbzConfig[key].counterAttackPower;
-
-                }
-                if (selectedCharName == dbzConfig[key].name) {
-                    myHealthPoints = dbzConfig[key].healthPoints;
-                    myAttackPower = dbzConfig[key].attackPower;
-                    myAttackPowerModifier = dbzConfig[key].attackPowerModifer;
-
-                }
+        for (var key in dbzConfig) {
+            if (selectedOpponentName == dbzConfig[key].name) {
+                opponentHealthPoints = eval(dbzConfig[key].healthPoints);
+                opponentCounterAttackPower = eval(dbzConfig[key].counterAttackPower);
             }
+            if (selectedCharName == dbzConfig[key].name) {
+                myHealthPoints = eval(dbzConfig[key].healthPoints);
+                myAttackPower = eval(dbzConfig[key].attackPower);
+                myAttackPowerModifier = eval(dbzConfig[key].attackPowerModifer);
+            }
+        }
+        $('.fight-button').on('click', function() {
             self.fightCalc();
         });
     }
     self.fightCalc = function() {
         //stopping here
-        console.log(myAttackPower + myAttackPowerModifier)
-        
-        // opponentHealthPoints - myAttacks;
-        console.log('selected opponent hp is: ' + opponentHealthPoints)
-        console.log('selected opponent counter attack power is: ' + opponentCounterAttackPower)
-        console.log('selected char hp is :' + myHealthPoints)
-        console.log('selected char attack power is :' + myAttackPower)
-        console.log('selected char attack power modifer is :' + myAttackPowerModifier)
+        myAttackPower += myAttackPowerModifier;
+        opponentHealthPoints = opponentHealthPoints - myAttackPower;
+        console.log(selectedCharName + ' did ' + myAttackPower + ' damage!');
+        console.log(selectedOpponentName + ' has ' + opponentHealthPoints + ' hp remaining!');
     }
 
 }
