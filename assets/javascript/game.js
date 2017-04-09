@@ -1,26 +1,26 @@
 var dbzConfig = {
-    char1 : {
+    char1: {
         name: 'Goku',
         healthPoints: 100,
         attackPower: 5,
         attackPowerModifer: 5,
         counterAttackPower: 10,
     },
-    char2 : {
+    char2: {
         name: 'Vegeta',
         healthPoints: 150,
         attackPower: 3,
         attackPowerModifer: 3,
         counterAttackPower: 3,
     },
-    char3 : {
+    char3: {
         name: 'Trunks',
         healthPoints: 110,
         attackPower: 5,
         attackPowerModifer: 5,
         counterAttackPower: 10,
     },
-    char4 : {
+    char4: {
         name: 'Gohan',
         healthPoints: 130,
         attackPower: 5,
@@ -41,12 +41,11 @@ function RpgGame(config) {
         self.makeChars();
     };
     self.makeChars = function() {
-        for (var i = 0; i < dbzConfig.length; i++) {
-            console.log('looping');
+        for (var key in dbzConfig) {
             var charDiv = $('<div>');
-            charDiv.addClass('char-box char-name').attr('data-char', this.dbzConfig[i].name).text(this.dbzConfig[i].name);
+            charDiv.addClass('char-box char-name').attr('data-char', dbzConfig[key].name).text(dbzConfig[key].name);
             $('.your-char').append(charDiv);
-        };
+        }
     };
     self.charCheck = function() {
         if (this.isCharSelected === false) {
@@ -60,10 +59,10 @@ function RpgGame(config) {
         };
     };
     self.createEnemies = function() {
-        for (i = 0; i < this.char.name.length; i++) {
+        for (var key in dbzConfig) {
             var enemyList = $('<div class="enemy-box">');
-            enemyList.attr('data-char', this.char.name[i]).text(this.char.name[i]);
-            if (isCharSelected == true && selectedCharName !== this.char.name[i]) {         
+            enemyList.attr('data-char', dbzConfig[key].name).text(dbzConfig[key].name);
+            if (isCharSelected == true && selectedCharName !== dbzConfig[key].name) {
                 $('.your-enemies').append(enemyList);
             };
         };
