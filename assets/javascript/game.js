@@ -34,46 +34,64 @@ dbzRpgGame.startGame(); //calls for game start.. test by consoling dbzRpgGame.ch
 function RpgGame(config) {
     var self = this;
     self.selectedCharName = "";
+    self.selectedOpponentName = "";
     self.isCharSelected = false;
     self.isEnemySelected = false;
-    self.char = config.char //this is where putting in the dbz config will pull the charName object that is passed through... you would apply .config to anything you want to vary per game
+    self.wins = 0;
     self.startGame = function() {
         self.makeChars();
     };
     self.makeChars = function() {
         for (var key in dbzConfig) {
-            var charDiv = $('<div>');
-            charDiv.addClass('char-box char-name').attr('data-char', dbzConfig[key].name).text(dbzConfig[key].name);
+            var charDiv = $('<div class="char-box char-name">');
+            charDiv.text(dbzConfig[key].name);
             $('.your-char').append(charDiv);
         }
     };
     self.charCheck = function() {
-        if (this.isCharSelected === false) {
-            var selectedChar = $('<div id="selected-char">');
-            selectedChar.text(selectedCharName);
-            $('.char-box').remove();
-            $('.your-char').append(selectedChar);
-            $('.instructions').text('Select an enemy!')
-            isCharSelected = true;
-            self.createEnemies();
-        };
+        var selectedChar = $('<div id="selected-char">');
+        var textBoxDiv = $('<div id="selected-char-text">');
+        textBoxDiv.text('You have selected ' + selectedCharName);
+        selectedChar.text(selectedCharName);
+        $('.text-box').prepend(textBoxDiv)
+        $('.char-box').detach();
+        $('.your-char').append(selectedChar);
+        $('.instructions').text('Select an enemy!')
+        self.isCharSelected = true;
+        self.createEnemies();
     };
     self.createEnemies = function() {
         for (var key in dbzConfig) {
-            var enemyList = $('<div class="enemy-box">');
+            var enemyList = $('<div class="enemy-box char-box">');
             enemyList.attr('data-char', dbzConfig[key].name).text(dbzConfig[key].name);
-            if (isCharSelected == true && selectedCharName !== dbzConfig[key].name) {
+            if (self.isCharSelected === true && selectedCharName !== dbzConfig[key].name) {
                 $('.your-enemies').append(enemyList);
-            };
-        };
+            }
+        }
+        $('.enemy-box').on('click',function() {
+            selectedOpponentName = $(this).text();
+            self.selectOpponent();
+        });
     };
-};
+    self.selectOpponent = function() {
+        if (self.isCharSelected === true && self.isEnemySelected === false) {
+            var selectedOpponent = $('<div id="selected-opponent">');
+            selectedOpponent.text(selectedOpponentName);
+            $('.your-opponent').append(selectedOpponent);
+            $('.instructions').text('Fight!!')
+            self.isEnemySelected = true;
+            $('#selected-char-text').html(selectedCharName + ' versus ' + selectedOpponentName);
+        }
+    }
+}
+
+
 $(document).ready(function() {
     $('.char-box').on('click', function() {
-        var textBoxDiv = $('<div id="selected-char-text">');
-        selectedCharName = $(this).attr('data-char')
-        textBoxDiv.text('You have selected ' + selectedCharName);
-        $('.text-box').prepend(textBoxDiv)
-        dbzRpgGame.charCheck();
+        if (dbzRpgGame.isCharSelected === false) {            
+            selectedCharName = $(this).text();
+            dbzRpgGame.charCheck();
+        }
     });
+
 });

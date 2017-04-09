@@ -48,6 +48,16 @@
 	color: darkseagreen;
 	font-weight: 700;
 }
+#selected-opponent {
+	border: 5px solid cornflowerblue;
+	height: 200px;
+	width: 200px;
+	display: inline-block;
+	margin: 10px;
+	text-align: center;
+	color: darkseagreen;
+	font-weight: 700;
+}
 .enemy-box {
 	border: 5px solid red;
 	height: 200px;
