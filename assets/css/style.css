@@ -71,3 +71,12 @@
 	color: red;
 	text-align: center
 }
+.fight-button {
+	border: 2px solid orange;
+	margin: 10px;
+	height: 234px;
+}
+#fight {
+	width: 75px;
+	height: 30px;
+}

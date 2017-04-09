@@ -1,26 +1,26 @@
 var dbzConfig = {
-    char1: {
+    Goku: {
         name: 'Goku',
         healthPoints: 100,
         attackPower: 5,
         attackPowerModifer: 5,
         counterAttackPower: 10,
     },
-    char2: {
+    Vegeta: {
         name: 'Vegeta',
         healthPoints: 150,
         attackPower: 3,
         attackPowerModifer: 3,
         counterAttackPower: 3,
     },
-    char3: {
+    Trunks: {
         name: 'Trunks',
         healthPoints: 110,
         attackPower: 5,
         attackPowerModifer: 5,
         counterAttackPower: 10,
     },
-    char4: {
+    Gohan: {
         name: 'Gohan',
         healthPoints: 130,
         attackPower: 5,
@@ -38,6 +38,12 @@ function RpgGame(config) {
     self.isCharSelected = false;
     self.isEnemySelected = false;
     self.wins = 0;
+    self.opponentHealthPoints;
+    self.opponentCounterAttackPower;
+    self.myHealthPoints;
+    self.myAttackPower;
+    self.myAttackPowerModifier;
+    self.myAttacks
     self.startGame = function() {
         self.makeChars();
     };
@@ -68,7 +74,7 @@ function RpgGame(config) {
                 $('.your-enemies').append(enemyList);
             }
         }
-        $('.enemy-box').on('click',function() {
+        $('.enemy-box').on('click', function() {
             selectedOpponentName = $(this).text();
             self.selectOpponent();
         });
@@ -79,16 +85,50 @@ function RpgGame(config) {
             selectedOpponent.text(selectedOpponentName);
             $('.your-opponent').append(selectedOpponent);
             $('.instructions').text('Fight!!')
-            self.isEnemySelected = true;
             $('#selected-char-text').html(selectedCharName + ' versus ' + selectedOpponentName);
+            self.isEnemySelected = true;
+            self.fight();
         }
     }
+    self.fight = function() {
+        var fightDiv = $('<button id="fight">');
+        fightDiv.text('Fight!');
+        $('.fight-button').append(fightDiv);
+        $('.fight-button').on('click', function() {
+            for (var key in dbzConfig) {
+                if (selectedOpponentName == dbzConfig[key].name) {
+                    opponentHealthPoints = dbzConfig[key].healthPoints;
+                    opponentCounterAttackPower = dbzConfig[key].counterAttackPower;
+
+                }
+                if (selectedCharName == dbzConfig[key].name) {
+                    myHealthPoints = dbzConfig[key].healthPoints;
+                    myAttackPower = dbzConfig[key].attackPower;
+                    myAttackPowerModifier = dbzConfig[key].attackPowerModifer;
+
+                }
+            }
+            self.fightCalc();
+        });
+    }
+    self.fightCalc = function() {
+        //stopping here
+        console.log(myAttackPower + myAttackPowerModifier)
+        
+        // opponentHealthPoints - myAttacks;
+        console.log('selected opponent hp is: ' + opponentHealthPoints)
+        console.log('selected opponent counter attack power is: ' + opponentCounterAttackPower)
+        console.log('selected char hp is :' + myHealthPoints)
+        console.log('selected char attack power is :' + myAttackPower)
+        console.log('selected char attack power modifer is :' + myAttackPowerModifier)
+    }
+
 }
 
 
 $(document).ready(function() {
     $('.char-box').on('click', function() {
-        if (dbzRpgGame.isCharSelected === false) {            
+        if (dbzRpgGame.isCharSelected === false) {
             selectedCharName = $(this).text();
             dbzRpgGame.charCheck();
         }
