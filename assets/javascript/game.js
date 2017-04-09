@@ -25,7 +25,7 @@ var dbzConfig = {
         healthPoints: 130,
         attackPower: 5,
         attackPowerModifer: 25,
-        counterAttackPower: 100,
+        counterAttackPower: 50,
     }
 };
 var dbzRpgGame = new RpgGame(dbzConfig); //creates a dbz instanced object where charName is passed through
@@ -43,7 +43,8 @@ function RpgGame(config) {
     self.myHealthPoints;
     self.myAttackPower;
     self.myAttackPowerModifier;
-    self.myAttacks
+    self.myAttacks;
+    self.defatedEnemies = [];
     self.startGame = function() {
         self.makeChars();
     };
@@ -70,7 +71,7 @@ function RpgGame(config) {
         for (var key in dbzConfig) {
             var enemyList = $('<div class="enemy-box char-box">');
             enemyList.attr('data-char', dbzConfig[key].name).text(dbzConfig[key].name);
-            if (self.isCharSelected === true && selectedCharName !== dbzConfig[key].name) {
+            if (self.isCharSelected === true && selectedCharName !== dbzConfig[key].name && dbzRpgGame.defatedEnemies.indexOf(dbzConfig[key].name) == -1) {
                 $('.your-enemies').append(enemyList);
             }
         }
@@ -105,20 +106,38 @@ function RpgGame(config) {
                 myAttackPowerModifier = eval(dbzConfig[key].attackPowerModifer);
             }
         }
-        $('.fight-button').on('click', function() {
+        $('#fight').on('click', function() {
             self.fightCalc();
         });
     }
     self.fightCalc = function() {
         //stopping here
+        if(myHealthPoints <= 0 ) {
+            alert('You lose!');
+        } else if (opponentHealthPoints >= 0 ) {
         myAttackPower += myAttackPowerModifier;
         opponentHealthPoints = opponentHealthPoints - myAttackPower;
+        myHealthPoints -= opponentCounterAttackPower;
         console.log(selectedCharName + ' did ' + myAttackPower + ' damage!');
         console.log(selectedOpponentName + ' has ' + opponentHealthPoints + ' hp remaining!');
+        console.log(selectedOpponentName + ' did ' + opponentCounterAttackPower + ' damage to you!');
+        console.log('You have ' + myHealthPoints + ' HP remaining!');
+        } else { 
+        dbzRpgGame.defatedEnemies.push(selectedOpponentName);
+        self.isEnemySelected = false;
+        $('.your-opponent').detach();
+        $('#fight').detach();
+        $('.enemy-box').detach();
+        self.wins ++
+        console.log('wins: ' + self.wins);
+        self.createEnemies();
+        if (self.wins >= 3){
+            alert('You Win!!');
+            // self.startGame(); will do reset last
+        }
+        }
     }
-
 }
-
 
 $(document).ready(function() {
     $('.char-box').on('click', function() {
