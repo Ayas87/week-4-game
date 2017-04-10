@@ -79,4 +79,10 @@
 #fight {
 	width: 75px;
 	height: 30px;
+	float: left;
+}
+.battle-text {
+	text-align: center;
+	color: red;
+	overflow: scroll;
 }

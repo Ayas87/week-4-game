@@ -111,30 +111,42 @@ function RpgGame(config) {
         });
     }
     self.fightCalc = function() {
-        //stopping here
-        if(myHealthPoints <= 0 ) {
-            alert('You lose!');
-        } else if (opponentHealthPoints >= 0 ) {
+        var battleLogMyDmg = $('<div class="battle-log-my-dmg">');
+        var battleLogMyHp = $('<div class="battle-log-my-hp">');
+        var battleLogOpponentDmg = $('<div class="battle-log-opponent-dmg">');
+        var battleLogOpponentHp = $('<div class="battle-log-opponent-hp">');
+        $('.battle-text').append(battleLogMyDmg);
+        $('.battle-text').append(battleLogOpponentHp);
+        $('.battle-text').append(battleLogOpponentDmg);
+        $('.battle-text').append(battleLogMyHp);
         myAttackPower += myAttackPowerModifier;
         opponentHealthPoints = opponentHealthPoints - myAttackPower;
         myHealthPoints -= opponentCounterAttackPower;
-        console.log(selectedCharName + ' did ' + myAttackPower + ' damage!');
-        console.log(selectedOpponentName + ' has ' + opponentHealthPoints + ' hp remaining!');
-        console.log(selectedOpponentName + ' did ' + opponentCounterAttackPower + ' damage to you!');
-        console.log('You have ' + myHealthPoints + ' HP remaining!');
-        } else { 
-        dbzRpgGame.defatedEnemies.push(selectedOpponentName);
-        self.isEnemySelected = false;
-        $('.your-opponent').detach();
-        $('#fight').detach();
-        $('.enemy-box').detach();
-        self.wins ++
-        console.log('wins: ' + self.wins);
-        self.createEnemies();
-        if (self.wins >= 3){
-            alert('You Win!!');
-            // self.startGame(); will do reset last
-        }
+        battleLogMyDmg.text('You attacked ' + selectedCharName + ' for ' + myAttackPower + ' damage!');
+        battleLogOpponentHp.text(selectedOpponentName + ' has ' + opponentHealthPoints + ' hp remaining!');
+        battleLogOpponentDmg.text(selectedOpponentName + ' countered for ' + opponentCounterAttackPower + '!');
+        battleLogMyHp.text('You have ' + myHealthPoints + ' HP remaining!');
+
+        self.winCondition();
+    }
+    self.winCondition = function() {
+        if(opponentHealthPoints <=0) {
+            dbzRpgGame.defatedEnemies.push(selectedOpponentName);
+            $('.battle-text').text('You have defeated ' + selectedOpponentName);
+            $('.your-opponent').detach();
+            $('#fight').detach();
+            $('.enemy-box').detach();
+            $('win-counter').text(self.wins);
+            if (self.wins >=3) {
+                alert('You Win!!');
+            }
+            self.wins++;
+            self.isEnemySelected = false;
+            self.createEnemies();
+        } else if (myHealthPoints <= 0){
+            alert('You Lose!');
+        } else {
+
         }
     }
 }
