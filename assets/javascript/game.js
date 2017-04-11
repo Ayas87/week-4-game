@@ -37,18 +37,18 @@ dbzRpgGame.startGame(); //calls for game start.. test by consoling dbzRpgGame.ch
 
 function RpgGame(config) {
     var self = this;
-    self.selectedCharName = "";
-    self.selectedOpponentName = "";
-    self.isCharSelected = false;
-    self.isEnemySelected = false;
-    self.wins = 0;
-    self.opponentHealthPoints;
-    self.opponentCounterAttackPower;
-    self.myHealthPoints;
-    self.myAttackPower;
-    self.myAttackPowerModifier;
-    self.myAttacks;
-    self.defatedEnemies = [];
+    // self.selectedCharName = "";
+    // self.selectedOpponentName = "";
+    // self.isCharSelected = false;
+    // self.isEnemySelected = false;
+    // self.wins = 0;
+    // // self.opponentHealthPoints;
+    // // self.opponentCounterAttackPower;
+    // // self.myHealthPoints;
+    // // self.myAttackPower;
+    // // self.myAttackPowerModifier;
+    // // self.myAttacks;
+    // self.defatedEnemies = [];
     self.startGame = function() {
         self.makeChars();
     };
