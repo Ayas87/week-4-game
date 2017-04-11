@@ -5,6 +5,7 @@ var dbzConfig = {
         attackPower: 10,
         attackPowerModifer: 1,
         counterAttackPower: 10,
+        img: '../images/Goku.jpg',
     },
     Vegeta: {
         name: 'Vegeta',
@@ -12,6 +13,7 @@ var dbzConfig = {
         attackPower: 5,
         attackPowerModifer: 35,
         counterAttackPower: 3,
+        img: '../images/Vegeta.jpg',
     },
     Trunks: {
         name: 'Trunks',
@@ -19,6 +21,7 @@ var dbzConfig = {
         attackPower: 5,
         attackPowerModifer: 35,
         counterAttackPower: 10,
+        img: '../images/Trunks.jpg',
     },
     Gohan: {
         name: 'Gohan',
@@ -26,6 +29,7 @@ var dbzConfig = {
         attackPower: 5,
         attackPowerModifer: 25,
         counterAttackPower: 50,
+        img: '../images/Gohan.jpg',
     }
 };
 var dbzRpgGame = new RpgGame(dbzConfig); //creates a dbz instanced object where charName is passed through
@@ -49,12 +53,42 @@ function RpgGame(config) {
         self.makeChars();
     };
     self.makeChars = function() {
+        self.isCharSelected = false;
+        self.isEnemySelected = false;
+        // $('.enemy-box').detach();
+        // $('.char-box').detach();
+        // $('#your-opponent').detach();
+        // $('#selected-char').detach();
+        self.defatedEnemies = []
+        self.wins = 0;
+        $('.your-char').empty();
+        $('.your-opponent').empty();
+        $('.your-enemies').empty();
+        $('.battle-text').empty();
+        $('.instructions').empty();
+        $('.instructions').text('Select a character!');
+        $('#selected-char-text').empty();
+        $('#new-game').detach();
         for (var key in dbzConfig) {
-            var charDiv = $('<div class="char-box char-name">');
+            var charDiv = $('<div class="char-box">');
             charDiv.text(dbzConfig[key].name);
             $('.your-char').append(charDiv);
+             $('.char-box').on('click', function() {
+            if (dbzRpgGame.isCharSelected === false) {
+                selectedCharName = $(this).text();
+                dbzRpgGame.charCheck();
+        }
+    });
         }
     };
+    self.newGameButton = function() {
+        var newGame = $('<button id="new-game">');
+        $('.fight-button').prepend(newGame);
+        newGame.text('New Game');
+        $('#new-game').on('click', function() {
+            self.makeChars();
+        });
+    }
     self.charCheck = function() {
         var selectedChar = $('<div id="selected-char">');
         var textBoxDiv = $('<div id="selected-char-text">');
@@ -84,6 +118,8 @@ function RpgGame(config) {
         if (self.isCharSelected === true && self.isEnemySelected === false) {
             var selectedOpponent = $('<div id="selected-opponent">');
             selectedOpponent.text(selectedOpponentName);
+            $('.enemy-box').detach();
+            self.createEnemies();
             $('.your-opponent').append(selectedOpponent);
             $('.instructions').text('Fight!!')
             $('#selected-char-text').html(selectedCharName + ' versus ' + selectedOpponentName);
@@ -94,7 +130,7 @@ function RpgGame(config) {
     self.fight = function() {
         var fightDiv = $('<button id="fight">');
         fightDiv.text('Fight!');
-        $('.fight-button').append(fightDiv);
+        $('.fight-button').prepend(fightDiv);
         for (var key in dbzConfig) {
             if (selectedOpponentName == dbzConfig[key].name) {
                 opponentHealthPoints = eval(dbzConfig[key].healthPoints);
@@ -115,10 +151,10 @@ function RpgGame(config) {
         var battleLogMyHp = $('<div class="battle-log-my-hp">');
         var battleLogOpponentDmg = $('<div class="battle-log-opponent-dmg">');
         var battleLogOpponentHp = $('<div class="battle-log-opponent-hp">');
-        $('.battle-text').append(battleLogMyDmg);
-        $('.battle-text').append(battleLogOpponentHp);
-        $('.battle-text').append(battleLogOpponentDmg);
-        $('.battle-text').append(battleLogMyHp);
+        $('.battle-text').prepend(battleLogMyDmg);
+        $('.battle-text').prepend(battleLogOpponentHp);
+        $('.battle-text').prepend(battleLogOpponentDmg);
+        $('.battle-text').prepend(battleLogMyHp);
         myAttackPower += myAttackPowerModifier;
         opponentHealthPoints = opponentHealthPoints - myAttackPower;
         myHealthPoints -= opponentCounterAttackPower;
@@ -136,19 +172,21 @@ function RpgGame(config) {
             $('.your-opponent').detach();
             $('#fight').detach();
             $('.enemy-box').detach();
-            $('win-counter').text(self.wins);
+            self.wins++;
+            $('.win-counter').text('Wins: ' + self.wins);
             if (self.wins >=3) {
                 alert('You Win!!');
+                self.newGameButton();
             }
-            self.wins++;
             self.isEnemySelected = false;
             self.createEnemies();
         } else if (myHealthPoints <= 0){
+            $('#fight').detach();
             alert('You Lose!');
-        } else {
-
+            self.newGameButton();
         }
     }
+    
 }
 
 $(document).ready(function() {
