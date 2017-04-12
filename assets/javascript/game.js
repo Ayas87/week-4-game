@@ -5,7 +5,7 @@ var dbzConfig = {
         attackPower: 10,
         attackPowerModifer: 1,
         counterAttackPower: 10,
-        img: '../images/Goku.jpg',
+        img: 'assets/images/Goku.jpg',
     },
     Vegeta: {
         name: 'Vegeta',
@@ -13,7 +13,7 @@ var dbzConfig = {
         attackPower: 5,
         attackPowerModifer: 35,
         counterAttackPower: 3,
-        img: '../images/Vegeta.jpg',
+        img: 'assets/images/Vegeta.jpg',
     },
     Trunks: {
         name: 'Trunks',
@@ -21,7 +21,7 @@ var dbzConfig = {
         attackPower: 5,
         attackPowerModifer: 35,
         counterAttackPower: 10,
-        img: '../images/Trunks.jpg',
+        img: 'assets/images/Trunks.jpg',
     },
     Gohan: {
         name: 'Gohan',
@@ -29,36 +29,20 @@ var dbzConfig = {
         attackPower: 5,
         attackPowerModifer: 25,
         counterAttackPower: 50,
-        img: '../images/Gohan.jpg',
+        img: 'assets/images/Gohan.jpg',
     }
 };
 var dbzRpgGame = new RpgGame(dbzConfig); //creates a dbz instanced object where charName is passed through
-dbzRpgGame.startGame(); //calls for game start.. test by consoling dbzRpgGame.charName. confirmed to work
+dbzRpgGame.startGame(); //calls for game start.
 
-function RpgGame(config) {
+function RpgGame(config) { //takes in config files .. most of game code runs here
     var self = this;
-    // self.selectedCharName = "";
-    // self.selectedOpponentName = "";
-    // self.isCharSelected = false;
-    // self.isEnemySelected = false;
-    // self.wins = 0;
-    // // self.opponentHealthPoints;
-    // // self.opponentCounterAttackPower;
-    // // self.myHealthPoints;
-    // // self.myAttackPower;
-    // // self.myAttackPowerModifier;
-    // // self.myAttacks;
-    // self.defatedEnemies = [];
     self.startGame = function() {
         self.makeChars();
     };
-    self.makeChars = function() {
+    self.makeChars = function() { //resets all variables, clears divs, and creates new chars (starts new game)
         self.isCharSelected = false;
         self.isEnemySelected = false;
-        // $('.enemy-box').detach();
-        // $('.char-box').detach();
-        // $('#your-opponent').detach();
-        // $('#selected-char').detach();
         self.defatedEnemies = []
         self.wins = 0;
         $('.your-char').empty();
@@ -71,7 +55,8 @@ function RpgGame(config) {
         $('#new-game').detach();
         for (var key in dbzConfig) {
             var charDiv = $('<div class="char-box">');
-            charDiv.text(dbzConfig[key].name);
+            charDiv.append(dbzConfig[key].name);
+            charDiv.append('<img src="' + dbzConfig[key].img  + '">');
             $('.your-char').append(charDiv);
              $('.char-box').on('click', function() {
             if (dbzRpgGame.isCharSelected === false) {
@@ -81,7 +66,8 @@ function RpgGame(config) {
     });
         }
     };
-    self.newGameButton = function() {
+    self.newGameButton = function() { //creates a clickable button that reruns the makeChar function
+        $('.win-counter').empty();
         var newGame = $('<button id="new-game">');
         $('.fight-button').prepend(newGame);
         newGame.text('New Game');
@@ -89,7 +75,7 @@ function RpgGame(config) {
             self.makeChars();
         });
     }
-    self.charCheck = function() {
+    self.charCheck = function() { //appends selected character and initates the createEnemies function
         var selectedChar = $('<div id="selected-char">');
         var textBoxDiv = $('<div id="selected-char-text">');
         textBoxDiv.text('You have selected ' + selectedCharName);
@@ -101,7 +87,7 @@ function RpgGame(config) {
         self.isCharSelected = true;
         self.createEnemies();
     };
-    self.createEnemies = function() {
+    self.createEnemies = function() { //checks to make sure enemies are not selected heroes or opponents or defeated enemies
         for (var key in dbzConfig) {
             var enemyList = $('<div class="enemy-box char-box">');
             enemyList.attr('data-char', dbzConfig[key].name).text(dbzConfig[key].name);
@@ -109,12 +95,12 @@ function RpgGame(config) {
                 $('.your-enemies').append(enemyList);
             }
         }
-        $('.enemy-box').on('click', function() {
+        $('.enemy-box').on('click', function() { //assigns click event
             selectedOpponentName = $(this).text();
             self.selectOpponent();
         });
     };
-    self.selectOpponent = function() {
+    self.selectOpponent = function() { //recreates enemy list to not include selected opponent, creates opponent, runs fight function
         if (self.isCharSelected === true && self.isEnemySelected === false) {
             var selectedOpponent = $('<div id="selected-opponent">');
             selectedOpponent.text(selectedOpponentName);
@@ -127,7 +113,7 @@ function RpgGame(config) {
             self.fight();
         }
     }
-    self.fight = function() {
+    self.fight = function() { //creates a fight button and pulls stats for each char based on the config object, assigns click handler
         var fightDiv = $('<button id="fight">');
         fightDiv.text('Fight!');
         $('.fight-button').prepend(fightDiv);
@@ -146,7 +132,7 @@ function RpgGame(config) {
             self.fightCalc();
         });
     }
-    self.fightCalc = function() {
+    self.fightCalc = function() { //does damage calculations as well as appends text
         var battleLogMyDmg = $('<div class="battle-log-my-dmg">');
         var battleLogMyHp = $('<div class="battle-log-my-hp">');
         var battleLogOpponentDmg = $('<div class="battle-log-opponent-dmg">');
@@ -165,11 +151,11 @@ function RpgGame(config) {
 
         self.winCondition();
     }
-    self.winCondition = function() {
+    self.winCondition = function() { //checks if we beat the opponent or lost the game, creates a new game button if win or lose occurs, else it continues back to select opponent
         if(opponentHealthPoints <=0) {
             dbzRpgGame.defatedEnemies.push(selectedOpponentName);
             $('.battle-text').text('You have defeated ' + selectedOpponentName);
-            $('.your-opponent').detach();
+            $('.your-opponent').empty();
             $('#fight').detach();
             $('.enemy-box').detach();
             self.wins++;
@@ -188,13 +174,3 @@ function RpgGame(config) {
     }
     
 }
-
-$(document).ready(function() {
-    $('.char-box').on('click', function() {
-        if (dbzRpgGame.isCharSelected === false) {
-            selectedCharName = $(this).text();
-            dbzRpgGame.charCheck();
-        }
-    });
-
-});
