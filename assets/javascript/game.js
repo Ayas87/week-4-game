@@ -54,9 +54,9 @@ function RpgGame(config) { //takes in config files .. most of game code runs her
         $('#selected-char-text').empty();
         $('#new-game').detach();
         for (var key in dbzConfig) {
-            var charDiv = $('<div class="char-box">');
+            var charDiv = $('<div class="char-box" id="' + dbzConfig[key].name +'">');
             charDiv.append(dbzConfig[key].name);
-            charDiv.append('<img src="' + dbzConfig[key].img  + '">');
+            // charDiv.append('<img src="' + dbzConfig[key].img  + '">');
             $('.your-char').append(charDiv);
              $('.char-box').on('click', function() {
             if (dbzRpgGame.isCharSelected === false) {
@@ -76,8 +76,8 @@ function RpgGame(config) { //takes in config files .. most of game code runs her
         });
     }
     self.charCheck = function() { //appends selected character and initates the createEnemies function
-        var selectedChar = $('<div id="selected-char">');
-        var textBoxDiv = $('<div id="selected-char-text">');
+        var selectedChar = $('<div class="selected-char" id="' + selectedCharName + '">');
+        var textBoxDiv = $('<div class="selected-char-text">');
         textBoxDiv.text('You have selected ' + selectedCharName);
         selectedChar.text(selectedCharName);
         $('.text-box').prepend(textBoxDiv)
@@ -89,7 +89,7 @@ function RpgGame(config) { //takes in config files .. most of game code runs her
     };
     self.createEnemies = function() { //checks to make sure enemies are not selected heroes or opponents or defeated enemies
         for (var key in dbzConfig) {
-            var enemyList = $('<div class="enemy-box char-box">');
+            var enemyList = $('<div class="enemy-box char-box" id="' + dbzConfig[key].name + '">');
             enemyList.attr('data-char', dbzConfig[key].name).text(dbzConfig[key].name);
             if (self.isCharSelected === true && selectedCharName !== dbzConfig[key].name && dbzRpgGame.defatedEnemies.indexOf(dbzConfig[key].name) == -1) {
                 $('.your-enemies').append(enemyList);
@@ -102,7 +102,7 @@ function RpgGame(config) { //takes in config files .. most of game code runs her
     };
     self.selectOpponent = function() { //recreates enemy list to not include selected opponent, creates opponent, runs fight function
         if (self.isCharSelected === true && self.isEnemySelected === false) {
-            var selectedOpponent = $('<div id="selected-opponent">');
+            var selectedOpponent = $('<div class="selected-opponent" id="'+ selectedOpponentName + '">');
             selectedOpponent.text(selectedOpponentName);
             $('.enemy-box').detach();
             self.createEnemies();

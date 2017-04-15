@@ -10,7 +10,7 @@
 	height: 150px;
 	padding: 30px;
 }
-#selected-char-text, .instructions {
+.selected-char-text, .instructions {
 	font-size: 20px;
 	color: darkseagreen;
 	font-weight: 700;
@@ -36,7 +36,7 @@
 }
 .char-box{
 	border: 5px solid grey;
-	height: 150px;
+	height: 200px;
 	width: 20%;
 	display: inline-block;
 	margin: 10px;
@@ -45,11 +45,11 @@
 	text-align: center;
 
 }
-.char-box img {
+/*.char-box img {
 	max-width: 100%;
 	height: auto;
-}
-#selected-char {
+}*/
+.selected-char {
 	border: 5px solid gold;
 	height: 200px;
 	width: 200px;
@@ -58,9 +58,8 @@
 	text-align: center;
 	color: darkseagreen;
 	font-weight: 700;
-	background: rgba(0,0,0,0.5);
 }
-#selected-opponent {
+.selected-opponent {
 	border: 5px solid cornflowerblue;
 	height: 200px;
 	width: 200px;
@@ -69,7 +68,6 @@
 	text-align: center;
 	color: darkseagreen;
 	font-weight: 700;
-	background: rgba(0,0,0,0.5);
 }
 .enemy-box {
 	border: 5px solid red;
@@ -91,6 +89,7 @@
 	margin: 10px;
 	height: 234px;
 	overflow: auto;
+	background: rgba(0,0,0,0.5);
 }
 #fight {
 	width: 75px;
@@ -105,10 +104,33 @@
 .battle-text {
 	text-align: center;
 	color: white;
-	background: rgba(0,0,0,0.5);
 }
 .win-counter {
 	float: right;
 	color: red;
 	font-weight: 700;
+}
+
+#Goku {
+	background-image: url(../images/Goku.jpg);
+	background-size: cover;
+	background-position: center;
+}
+#Vegeta {
+	background-image: url(../images/Vegeta.jpg);
+	background-size: cover;
+	background-position: center;
+
+}
+#Trunks {
+	background-image: url(../images/Trunks.jpg);
+	background-size: cover;
+	background-position: center;
+
+}
+#Gohan {
+	background-image: url(../images/Gohan.jpg);
+	background-size: cover;
+	background-position: center;
+
 }
